@@ -27,3 +27,12 @@ class TransformationAbstraction(TransformationInterface):
 
     def to_reversed(self, text: str) -> str:
         return self._adapter.to_reversed(text)
+
+    def to_swapcase(self, text: str) -> str:
+        return self._adapter.to_swapcase(text)
+
+    def to_titlecase(self, text: str) -> str:
+        return self._adapter.to_titlecase(text)
+
+    def to_length(self, text: str) -> int:
+        return self._adapter.to_length(text)

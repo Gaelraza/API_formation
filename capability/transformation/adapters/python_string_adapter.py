@@ -20,3 +20,12 @@ class PythonStringAdapter:
 
     def to_reversed(self, text: str) -> str:
         return text[::-1]
+
+    def to_swapcase(self, text: str) -> str:
+        return text.swapcase()
+
+    def to_titlecase(self, text: str) -> str:
+        return text.title()
+
+    def to_length(self, text: str) -> int:
+        return len(text)

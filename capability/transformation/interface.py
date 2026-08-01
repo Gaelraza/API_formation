@@ -29,3 +29,15 @@ class TransformationInterface(ABC):
     @abstractmethod
     def to_reversed(self, text: str) -> str:
         raise NotImplementedError
+
+    @abstractmethod
+    def to_swapcase(self, text: str) -> str:
+        raise NotImplementedError
+
+    @abstractmethod
+    def to_titlecase(self, text: str) -> str:
+        raise NotImplementedError
+
+    @abstractmethod
+    def to_length(self, text: str) -> int:
+        raise NotImplementedError
