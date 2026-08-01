@@ -102,12 +102,26 @@ from business_logic.validation import (
     max_length_validation,
 )
 
+from business_logic.database import (
+    create_record_database,
+    read_record_database,
+    update_record_database,
+    delete_record_database,
+)
+
 VALIDATE_ROUTING_TABLE = {
     "is_email": is_email_validation.execute,
     "is_numeric": is_numeric_validation.execute,
     "is_not_empty": is_not_empty_validation.execute,
     "min_length": min_length_validation.execute,
     "max_length": max_length_validation.execute,
+}
+
+DATABASE_ROUTING_TABLE = {
+    "create": create_record_database.execute,
+    "read": read_record_database.execute,
+    "update": update_record_database.execute,
+    "delete": delete_record_database.execute,
 }
 
 
@@ -122,6 +136,21 @@ def validate():
     if operation not in VALIDATE_ROUTING_TABLE:
         return jsonify({"success": False, "error": {"code": "UNKNOWN_OPERATION", "message": f"Unknown operation: {operation}"}}), 400
     result = VALIDATE_ROUTING_TABLE[operation](payload)
+    status_code = 200 if result.get("success") is True else 400
+    return jsonify(result), status_code
+
+
+@app.route("/database", methods=["POST"])
+def database():
+    payload = request.get_json(silent=True)
+    if not isinstance(payload, dict):
+        return jsonify({"success": False, "error": {"code": "INVALID_JSON", "message": "Request body must be a valid JSON object"}}), 400
+    if "operation" not in payload:
+        return jsonify({"success": False, "error": {"code": "MISSING_OPERATION", "message": "Missing required field: operation"}}), 400
+    operation = payload["operation"]
+    if operation not in DATABASE_ROUTING_TABLE:
+        return jsonify({"success": False, "error": {"code": "UNKNOWN_OPERATION", "message": f"Unknown operation: {operation}"}}), 400
+    result = DATABASE_ROUTING_TABLE[operation](payload)
     status_code = 200 if result.get("success") is True else 400
     return jsonify(result), status_code
 
