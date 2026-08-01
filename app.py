@@ -39,7 +39,6 @@ AUTH_ROUTING_TABLE = {
 
 @app.route("/transform", methods=["POST"])
 def transform():
-    # 2. Parse JSON body
     payload = request.get_json(silent=True)
     if not isinstance(payload, dict):
         return jsonify({
@@ -50,7 +49,6 @@ def transform():
             }
         }), 400
 
-    # 3. Extract "operation" field
     if "operation" not in payload:
         return jsonify({
             "success": False,
@@ -62,7 +60,6 @@ def transform():
 
     operation = payload["operation"]
 
-    # 4. Look up operation in routing table
     if operation not in ROUTING_TABLE:
         return jsonify({
             "success": False,
@@ -72,10 +69,8 @@ def transform():
             }
         }), 400
 
-    # 5. Call the matched business_logic module's execute(payload)
     result = ROUTING_TABLE[operation](payload)
 
-    # 6. Return the dict as HTTP JSON body with appropriate status code
     status_code = 200 if result.get("success") is True else 400
     return jsonify(result), status_code
 
