@@ -12,5 +12,5 @@ def execute(payload: dict) -> dict:
         abstraction = AuthenticationAbstraction(PyJWTAdapter())
         result = abstraction.generate_token(payload["claims"])
         return {"success": True, "data": {"result": result}}
-    except TypeError:
+    except (TypeError, RuntimeError):
         return {"success": False, "error": {"code": "AUTH_FAILED", "message": "A technical error occurred during authentication"}}

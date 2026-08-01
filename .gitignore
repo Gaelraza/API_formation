@@ -1,4 +1,4 @@
-```
+```python
 # Python
 __pycache__/
 *.pyc
@@ -9,33 +9,34 @@ env/
 venv/
 .venv/
 .ENV
+.ENV.local
 .env
-.env.*
 .env.local
-.env.dev
-.env.prod
-.env.test
-.env.staging
-.env.backup
-.env.example
-.env.sample
-.env.template
-.env.default
+.env.*
+*.env.*
+
+# Logs
+*.log
+
+# IDE and editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Build and distribution
+dist/
+build/
+*.egg-info/
+
+# Testing
 .coverage
 coverage/
 htmlcov/
 .pytest_cache/
 .mypy_cache/
-.tox/
-nox/
-.eggs/
-*.egg-info/
-pip-log.txt
-pip-delete-this-directory.txt
+
+# OS
 .DS_Store
 Thumbs.db
-*.swp
-*.swo
-*.tmp
-*.log
 ```

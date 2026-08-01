@@ -99,5 +99,37 @@ def authenticate():
     return jsonify(result), status_code
 
 
+from business_logic.validation import (
+    is_email_validation,
+    is_numeric_validation,
+    is_not_empty_validation,
+    min_length_validation,
+    max_length_validation,
+)
+
+VALIDATE_ROUTING_TABLE = {
+    "is_email": is_email_validation.execute,
+    "is_numeric": is_numeric_validation.execute,
+    "is_not_empty": is_not_empty_validation.execute,
+    "min_length": min_length_validation.execute,
+    "max_length": max_length_validation.execute,
+}
+
+
+@app.route("/validate", methods=["POST"])
+def validate():
+    payload = request.get_json(silent=True)
+    if not isinstance(payload, dict):
+        return jsonify({"success": False, "error": {"code": "INVALID_JSON", "message": "Request body must be a valid JSON object"}}), 400
+    if "operation" not in payload:
+        return jsonify({"success": False, "error": {"code": "MISSING_OPERATION", "message": "Missing required field: operation"}}), 400
+    operation = payload["operation"]
+    if operation not in VALIDATE_ROUTING_TABLE:
+        return jsonify({"success": False, "error": {"code": "UNKNOWN_OPERATION", "message": f"Unknown operation: {operation}"}}), 400
+    result = VALIDATE_ROUTING_TABLE[operation](payload)
+    status_code = 200 if result.get("success") is True else 400
+    return jsonify(result), status_code
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5000, debug=True)

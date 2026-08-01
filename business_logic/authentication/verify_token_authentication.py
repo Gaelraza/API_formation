@@ -18,5 +18,5 @@ def execute(payload: dict) -> dict:
         return {"success": False, "error": {"code": "TOKEN_EXPIRED", "message": "Token has expired"}}
     except jwt.InvalidTokenError:
         return {"success": False, "error": {"code": "INVALID_TOKEN", "message": "Token is invalid"}}
-    except TypeError:
+    except (TypeError, RuntimeError):
         return {"success": False, "error": {"code": "AUTH_FAILED", "message": "A technical error occurred during authentication"}}
